@@ -47,14 +47,14 @@ export const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <header className="navbar">
+          <header className="navbar flex items-center justify-between px-4 py-2 bg-white shadow-md sm:px-6 md:px-8">
             <div className="navbar-left">
-              <h1 className="username">
+              <h1 className="username text-lg font-semibold text-gray-700 sm:text-xl md:text-2xl">
                 {userInformation.username || "Guest User"}
               </h1>
             </div>
-            <div className="navbar-right">
-              <div className="notifications">
+            <div className="navbar-right flex items-center space-x-4">
+              <div className="notifications relative">
                 <motion.div
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
@@ -62,11 +62,11 @@ export const Dashboard = () => {
                     y: [0, -5, 0],
                     transition: { repeat: Infinity, duration: 1.5 },
                   }}
-                  className="icon-wrapper"
+                  className="icon-wrapper cursor-pointer"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="icon"
+                    className="icon w-6 h-6 text-gray-700 md:w-8 md:h-8"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -78,18 +78,21 @@ export const Dashboard = () => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="badge">{orderInformation}</span>
+                  <span className="badge absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                    {orderInformation}
+                  </span>
                 </motion.div>
               </div>
               <div className="avatar">
                 <img
                   alt="User avatar"
                   src={userInformation.userImage || "/default-avatar.png"}
-                  className="avatar-image"
+                  className="avatar-image w-8 h-8 rounded-full object-cover border border-gray-300 sm:w-10 sm:h-10 md:w-12 md:h-12"
                 />
               </div>
             </div>
           </header>
+
           <motion.div
             className="orders-summary"
             initial={{ opacity: 0, x: -20 }}
@@ -109,9 +112,7 @@ export const Dashboard = () => {
               {Array.isArray(orderList) &&
                 orderList
                   .slice()
-                  .sort(
-                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                  )
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((order, index) => (
                     <motion.div
                       className="order-card"
@@ -128,11 +129,21 @@ export const Dashboard = () => {
                           className="product-image"
                         />
                         <div className="info">
-                          <p><strong>Order ID:</strong> {order._id}</p>
-                          <p><strong>Product Name:</strong> {order.productName}</p>
-                          <p><strong>Quantity:</strong> {order.quantity}</p>
-                          <p><strong>Price:</strong> ${order.productPrice}</p>
-                          <p><strong>Status:</strong> {order.status}</p>
+                          <p>
+                            <strong>Order ID:</strong> {order._id}
+                          </p>
+                          <p>
+                            <strong>Product Name:</strong> {order.productName}
+                          </p>
+                          <p>
+                            <strong>Quantity:</strong> {order.quantity}
+                          </p>
+                          <p>
+                            <strong>Price:</strong> ${order.productPrice}
+                          </p>
+                          <p>
+                            <strong>Status:</strong> {order.status}
+                          </p>
                           <p>
                             <strong>Created At:</strong>{" "}
                             {new Date(order.createdAt).toLocaleString()}
@@ -164,7 +175,7 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-     background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
     color: #f1f5f9;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
