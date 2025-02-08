@@ -106,26 +106,22 @@ export const Dashboard = () => {
             </div>
           </header>
 
-          <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-            <div className="grid grid-cols-1 gap-4">
-              <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-                <h2 className="text-lg font-semibold">Total Orders</h2>
-                <p className="text-2xl font-bold mt-2">{orderList.length}</p>
-              </div>
-              <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-                <h2 className="text-lg font-semibold">Total Payment</h2>
-                <p className="text-2xl font-bold mt-2">${totalPayment.toFixed(2)}</p>
-              </div>
+          <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
+              <h2 className="text-lg font-semibold">Total Orders</h2>
+              <p className="text-2xl font-bold mt-2">{orderList.length}</p>
             </div>
-            <div className="grid grid-cols-1 gap-4">
-              <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-                <h2 className="text-lg font-semibold">Total Paid</h2>
-                <p className="text-2xl font-bold mt-2">${totalPaid.toFixed(2)}</p>
-              </div>
-              <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-                <h2 className="text-lg font-semibold">Total Pending</h2>
-                <p className="text-2xl font-bold mt-2">${totalPending.toFixed(2)}</p>
-              </div>
+            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
+              <h2 className="text-lg font-semibold">Total Payment</h2>
+              <p className="text-2xl font-bold mt-2">${totalPayment.toFixed(2)}</p>
+            </div>
+            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
+              <h2 className="text-lg font-semibold">Total Paid</h2>
+              <p className="text-2xl font-bold mt-2">${totalPaid.toFixed(2)}</p>
+            </div>
+            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
+              <h2 className="text-lg font-semibold">Total Pending</h2>
+              <p className="text-2xl font-bold mt-2">${totalPending.toFixed(2)}</p>
             </div>
           </motion.div>
 
