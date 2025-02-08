@@ -30,6 +30,11 @@ export const Dashboard = () => {
     if (id) fetchUserInformation();
   }, [id]);
 
+  const handleEditOrder = (orderId) => {
+    console.log(`Edit order with ID: ${orderId}`);
+    // Implement edit functionality here
+  };
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -101,6 +106,7 @@ export const Dashboard = () => {
           >
             <h2>Total Orders: {orderInformation || "N/A"}</h2>
           </motion.div>
+
           <motion.div
             className="orders-list"
             initial="hidden"
@@ -129,30 +135,21 @@ export const Dashboard = () => {
                           className="product-image"
                         />
                         <div className="info">
-                          <p>
-                            <strong>Order ID:</strong> {order._id}
-                          </p>
-                          <p>
-                            <strong>Product Name:</strong> {order.productName}
-                          </p>
-                          <p>
-                            <strong>Quantity:</strong> {order.quantity}
-                          </p>
-                          <p>
-                            <strong>Price:</strong> ${order.productPrice}
-                          </p>
-                          <p>
-                            <strong>Status:</strong> {order.status}
-                          </p>
-                          <p>
-                            <strong>Created At:</strong>{" "}
-                            {new Date(order.createdAt).toLocaleString()}
-                          </p>
-                          <Button
-                            label="Remove"
-                            orderId={order._id}
-                            userId={id}
-                          />
+                          <p><strong>Order ID:</strong> {order._id}</p>
+                          <p><strong>Product Name:</strong> {order.productName}</p>
+                          <p><strong>Quantity:</strong> {order.quantity}</p>
+                          <p><strong>Price:</strong> ${order.productPrice}</p>
+                          <p><strong>Status:</strong> {order.status}</p>
+                          <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+                          <div className="button-group flex gap-2 mt-4">
+                            <Button label="Remove" orderId={order._id} userId={id} />
+                            <button
+                              className="edit-button bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+                              onClick={() => handleEditOrder(order._id)}
+                            >
+                              Edit
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -170,7 +167,7 @@ export const Dashboard = () => {
 };
 
 const StyledWrapper = styled.div`
-  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   min-height: 100vh;
   padding: 2rem;
   color: #f1f5f9;
@@ -180,130 +177,45 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .username {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #f1f5f9;
-  }
-
-  .notifications {
-    position: relative;
-  }
-
-  .icon-wrapper {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .icon {
-    width: 28px;
-    height: 28px;
-    color: #f1f5f9;
-  }
-
-  .badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #ef4444;
-    color: white;
-    border-radius: 50%;
-    padding: 0.3rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: bold;
-  }
-
-  .avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 1rem;
-  }
-
-  .avatar-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .orders-summary {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    font-size: 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .orders-list {
+  .orders-summary, .orders-list {
     margin: 2rem auto;
-    max-width: 900px;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .title {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #f1f5f9;
-  }
-
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
   }
 
   .order-card {
     padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     gap: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .order-details {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .product-image {
-    width: 80px;
-    height: 80px;
+  .edit-button {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
     border-radius: 12px;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.5);
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #2563eb;
+    }
   }
 
   .loader-container {

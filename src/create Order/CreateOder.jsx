@@ -3,7 +3,7 @@ import FileBase64 from "react-file-base64";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
-import { motion } from "framer-motion"; // Import framer-motion for animation
+import { motion } from "framer-motion";
 
 export const CreateOrder = () => {
   const [userInformation, setUserInformation] = useState({});
@@ -16,10 +16,9 @@ export const CreateOrder = () => {
     adminUserId: "",
     adminEmail: "",
   });
-  const [loading, setLoading] = useState(false); // Loader state
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
-  // Fetch user information on `id` change
   useEffect(() => {
     const fetchUserInformation = async () => {
       try {
@@ -37,7 +36,6 @@ export const CreateOrder = () => {
     }
   }, [id]);
 
-  // Update `formData` when `userInformation` changes
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -46,18 +44,15 @@ export const CreateOrder = () => {
     }));
   }, [id, userInformation]);
 
-  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle file upload
   const handleFileUpload = (file) => {
     setFormData({ ...formData, productImage: file.base64 });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -95,93 +90,96 @@ export const CreateOrder = () => {
         </div>
       ) : (
         <motion.div
-          className="max-w-3xl mx-auto p-4 sm:p-6 md:p-8"
+          className="min-h-screen flex items-center justify-center"
           style={{
-            backgroundImage: "linear-gradient(135deg, #a18cd1, #fbc2eb)",
-            backgroundSize: "cover", // Optional: ensures the gradient covers the full div
-            backgroundPosition: "center", // Optional: ensures the gradient is centered
+            backgroundImage: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
           <form
             onSubmit={handleSubmit}
-            className="space-y-6 bg-white shadow-lg rounded-lg p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-xl"
+            className="space-y-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl p-8 max-w-4xl w-full mx-4"
           >
-            <h1 className="text-3xl font-semibold text-center text-indigo-600">
+            <h1 className="text-4xl font-bold text-center text-orange-500">
               Create New Order
             </h1>
 
-            <label className="flex flex-col space-y-2">
-              <span className="text-lg">Product Name</span>
-              <input
-                type="text"
-                name="productName"
-                value={formData.productName}
-                onChange={handleInputChange}
-                className="input input-bordered focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
-                placeholder="Product Name"
-                required
-              />
-            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <label className="flex flex-col space-y-2">
+                <span className="text-lg font-medium">Product Name</span>
+                <input
+                  type="text"
+                  name="productName"
+                  value={formData.productName}
+                  onChange={handleInputChange}
+                  className="input input-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
+                  placeholder="Product Name"
+                  required
+                />
+              </label>
 
-            <label className="flex flex-col space-y-2">
-              <span className="text-lg">Product Price (PKR)</span>
-              <input
-                type="number"
-                name="productPrice"
-                value={formData.productPrice}
-                onChange={handleInputChange}
-                className="input input-bordered focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
-                placeholder="PKR"
-                required
-                min="0"
-              />
-            </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-lg font-medium">Product Price (PKR)</span>
+                <input
+                  type="number"
+                  name="productPrice"
+                  value={formData.productPrice}
+                  onChange={handleInputChange}
+                  className="input input-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
+                  placeholder="PKR"
+                  required
+                  min="0"
+                />
+              </label>
 
-            <label className="flex flex-col space-y-2">
-              <span className="text-lg">Product Quantity</span>
-              <input
-                type="number"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleInputChange}
-                className="input input-bordered focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
-                placeholder="Minimum 1"
-                required
-                min="1"
-              />
-            </label>
+              <label className="flex flex-col space-y-2">
+                <span className="text-lg font-medium">Product Quantity</span>
+                <input
+                  type="number"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleInputChange}
+                  className="input input-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
+                  placeholder="Minimum 1"
+                  required
+                  min="1"
+                />
+              </label>
 
-            <label className="flex flex-col space-y-2">
-              <span className="text-lg">Product Description</span>
-              <textarea
-                name="productDescription"
-                value={formData.productDescription}
-                onChange={handleInputChange}
-                className="textarea textarea-bordered focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
-                placeholder="Product Description"
-                required
-              />
-            </label>
+              <label className="flex flex-col space-y-2 md:col-span-2">
+                <span className="text-lg font-medium">Product Description</span>
+                <textarea
+                  name="productDescription"
+                  value={formData.productDescription}
+                  onChange={handleInputChange}
+                  className="textarea textarea-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
+                  placeholder="Product Description"
+                  rows="4"
+                  required
+                />
+              </label>
 
-            <label className="flex flex-col space-y-2">
-              <span className="text-lg">Product Image</span>
-              <FileBase64
-                multiple={false}
-                onDone={handleFileUpload}
-                className="grow"
-                required
-              />
-            </label>
+              <label className="flex flex-col space-y-2 md:col-span-2">
+                <span className="text-lg font-medium">Product Image</span>
+                <FileBase64
+                  multiple={false}
+                  onDone={handleFileUpload}
+                  className="input input-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
+                  required
+                />
+              </label>
+            </div>
 
             <div className="text-center">
               <motion.button
                 type="submit"
-                className="btn btn-outline btn-accent w-full sm:w-auto mt-4 transition-transform duration-300 transform hover:scale-105"
+                className="btn bg-orange-400 text-white text-lg font-semibold px-8 py-3 rounded-2xl shadow-md hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 transition-transform duration-300"
                 disabled={loading}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Create Order
