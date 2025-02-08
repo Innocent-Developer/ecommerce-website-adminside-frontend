@@ -47,9 +47,9 @@ export const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <header className="navbar flex items-center justify-between px-4 py-2 bg-white shadow-md sm:px-6 md:px-8">
+          <header className="navbar flex items-center justify-between px-4 py-2 sm:px-6 md:px-8">
             <div className="navbar-left">
-              <h1 className="username text-lg font-semibold text-gray-700 sm:text-xl md:text-2xl">
+              <h1 className="username text-lg font-semibold sm:text-xl md:text-2xl">
                 {userInformation.username || "Guest User"}
               </h1>
             </div>
@@ -66,7 +66,7 @@ export const Dashboard = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="icon w-6 h-6 text-gray-700 md:w-8 md:h-8"
+                    className="icon w-6 h-6 md:w-8 md:h-8"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -78,7 +78,7 @@ export const Dashboard = () => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="badge absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                  <span className="badge absolute -top-2 -right-2 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
                     {orderInformation}
                   </span>
                 </motion.div>
@@ -87,7 +87,7 @@ export const Dashboard = () => {
                 <img
                   alt="User avatar"
                   src={userInformation.userImage || "/default-avatar.png"}
-                  className="avatar-image w-8 h-8 rounded-full object-cover border border-gray-300 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                  className="avatar-image w-8 h-8 rounded-full object-cover sm:w-10 sm:h-10 md:w-12 md:h-12"
                 />
               </div>
             </div>
@@ -170,19 +170,27 @@ export const Dashboard = () => {
 };
 
 const StyledWrapper = styled.div`
+  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+  min-height: 100vh;
+  padding: 2rem;
+  color: #f1f5f9;
+
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-    color: #f1f5f9;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .username {
     font-size: 1.8rem;
     font-weight: bold;
+    color: #f1f5f9;
   }
 
   .notifications {
@@ -194,10 +202,12 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0.7rem;
-    background: #64748b;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     cursor: pointer;
     position: relative;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .icon {
@@ -231,25 +241,30 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
   }
 
   .orders-summary {
     margin: 2rem 0;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     font-size: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .orders-list {
     margin: 2rem auto;
     max-width: 900px;
     padding: 1.5rem;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .title {
@@ -257,6 +272,7 @@ const StyledWrapper = styled.div`
     font-weight: bold;
     margin-bottom: 1.5rem;
     text-align: center;
+    color: #f1f5f9;
   }
 
   .list {
@@ -267,11 +283,13 @@ const StyledWrapper = styled.div`
 
   .order-card {
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     gap: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .order-details {
@@ -285,6 +303,7 @@ const StyledWrapper = styled.div`
     border-radius: 12px;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .loader-container {
