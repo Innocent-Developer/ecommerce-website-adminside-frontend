@@ -7,10 +7,9 @@ import Button from "./Button";
 
 export const Dashboard = () => {
   const { id } = useParams();
-  const [orderInformation, setOrderInformation] = useState(null);
   const [userInformation, setUserInformation] = useState(null);
   const [orderList, setOrderList] = useState([]);
-  const [editingOrder, setEditingOrder] = useState(null);
+  const [editingOrderId, setEditingOrderId] = useState(null);
   const [editedOrder, setEditedOrder] = useState({});
 
   useEffect(() => {
@@ -21,7 +20,6 @@ export const Dashboard = () => {
         );
         const data = response.data;
         setUserInformation(data.data);
-        setOrderInformation(data.orderList);
         setOrderList(data.orders || []);
       } catch (error) {
         console.error("Error fetching user information:", error);
@@ -32,7 +30,7 @@ export const Dashboard = () => {
   }, [id]);
 
   const handleEditClick = (order) => {
-    setEditingOrder(order._id);
+    setEditingOrderId(order._id);
     setEditedOrder({ ...order });
   };
 
@@ -44,13 +42,14 @@ export const Dashboard = () => {
   const handleSaveClick = async () => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_ADMIN_BACKEND_URL}/admin/update-order/${editingOrder}`,
+        `${process.env.REACT_APP_ADMIN_BACKEND_URL}/admin/update-order/${editingOrderId}`,
         editedOrder
       );
       setOrderList((prev) =>
-        prev.map((order) => (order._id === editingOrder ? editedOrder : order))
+        prev.map((order) => (order._id === editingOrderId ? editedOrder : order))
       );
-      setEditingOrder(null);
+      setEditingOrderId(null);
+      setEditedOrder({});
     } catch (error) {
       console.error("Error updating order:", error);
     }
@@ -86,7 +85,7 @@ export const Dashboard = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-                  {orderInformation}
+                  {orderList.length}
                 </span>
               </motion.div>
               <img src={userInformation.userImage || "/default-avatar.png"} alt="User avatar" className="w-12 h-12 rounded-full object-cover shadow-md border-2 border-white/20" />
@@ -94,20 +93,20 @@ export const Dashboard = () => {
           </header>
 
           <motion.div className="mt-8 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center text-lg border border-white/10" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
-            <h2>Total Orders: {orderInformation || "N/A"}</h2>
+            <h2>Total Orders: {orderList.length || "N/A"}</h2>
           </motion.div>
 
           <motion.div className="mt-8 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/10" initial="hidden" animate="visible" transition={{ staggerChildren: 0.2 }}>
             <h2 className="text-2xl font-bold text-center mb-4">Orders List:</h2>
             <div className="space-y-4">
-              {Array.isArray(orderList) && orderList
+              {orderList
                 .slice()
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((order, index) => (
                   <motion.div key={order._id} className="p-4 bg-white/10 backdrop-blur-sm rounded-xl shadow-md flex gap-4 border border-white/10" custom={index} variants={cardVariants} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <img src={order.productImage} alt="Product" className="w-16 h-16 rounded-xl object-cover shadow-md border border-white/10" />
                     <div>
-                      {editingOrder === order._id ? (
+                      {editingOrderId === order._id ? (
                         <div>
                           <p><strong>Order ID:</strong> {order._id}</p>
                           <p><strong>Product Name:</strong> <input type="text" name="productName" value={editedOrder.productName} onChange={handleInputChange} className="input-field" /></p>
@@ -125,7 +124,7 @@ export const Dashboard = () => {
                           <p><strong>Status:</strong> {order.status}</p>
                           <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
                           <Button label="Remove" orderId={order._id} userId={id} />
-                          <Button label="edit" orderId={order._id} userId={id} className="btn">Edit</Button>
+                          <button onClick={() => handleEditClick(order)} className="btn">Edit</button>
                         </div>
                       )}
                     </div>
