@@ -14,7 +14,7 @@ const Button = ({ label, orderId, userId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: orderId }), // Send ordernumber in request body
+        body: JSON.stringify({ id: orderId }), // Send order number in request body
       });
 
       if (response.ok) {
@@ -31,11 +31,22 @@ const Button = ({ label, orderId, userId }) => {
     }
   };
 
+  // Function to handle the edit request
+  const handleEdit = () => {
+    navigate(`/createorder/${orderId}`); // Navigate to the edit order page
+  };
+
   return (
     <StyledWrapper>
-      <button className="button" onClick={handleDelete}>
-        <span>{label}</span>
-      </button>
+      {label === 'Remove' ? (
+        <button className="button" onClick={handleDelete}>
+          <span>{label}</span>
+        </button>
+      ) : (
+        <button className="button" onClick={handleEdit}>
+          <span>{label}</span>
+        </button>
+      )}
     </StyledWrapper>
   );
 };
