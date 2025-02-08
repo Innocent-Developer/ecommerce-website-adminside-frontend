@@ -64,11 +64,6 @@ export const Dashboard = () => {
     order.productName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const totalPayment = orderList.reduce((sum, order) => sum + order.productPrice * order.quantity, 0);
-  const totalPaid = orderList.filter(order => order.status.toLowerCase() === 'paid')
-                             .reduce((sum, order) => sum + order.productPrice * order.quantity, 0);
-  const totalPending = totalPayment - totalPaid;
-
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -106,23 +101,8 @@ export const Dashboard = () => {
             </div>
           </header>
 
-          <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-              <h2 className="text-lg font-semibold">Total Orders</h2>
-              <p className="text-2xl font-bold mt-2">{orderList.length}</p>
-            </div>
-            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-              <h2 className="text-lg font-semibold">Total Payment</h2>
-              <p className="text-2xl font-bold mt-2">${totalPayment.toFixed(2)}</p>
-            </div>
-            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-              <h2 className="text-lg font-semibold">Total Paid</h2>
-              <p className="text-2xl font-bold mt-2">${totalPaid.toFixed(2)}</p>
-            </div>
-            <div className="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center border border-white/10">
-              <h2 className="text-lg font-semibold">Total Pending</h2>
-              <p className="text-2xl font-bold mt-2">${totalPending.toFixed(2)}</p>
-            </div>
+          <motion.div className="mt-8 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg text-center text-lg border border-white/10" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
+            <h2>Total Orders: {orderList.length || "N/A"}</h2>
           </motion.div>
 
           <motion.div className="mt-8 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/10" initial="hidden" animate="visible" transition={{ staggerChildren: 0.2 }}>
