@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import FileBase64 from "react-file-base64";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Loader from "../Loader";
 import { motion } from "framer-motion";
-import Header from "./Header"; // Import Header component
 
 export const CreateOrder = () => {
+  const { id } = useParams(); // Destructure 'id' from useParams
   const [userInformation, setUserInformation] = useState({});
   const [formData, setFormData] = useState({
     productName: "",
@@ -18,7 +18,7 @@ export const CreateOrder = () => {
     adminEmail: "",
   });
   const [loading, setLoading] = useState(false);
-  const { id } = useParams();
+  const [orderList, setOrderList] = useState([]); // Added state for order list length
 
   useEffect(() => {
     const fetchUserInformation = async () => {
@@ -40,7 +40,7 @@ export const CreateOrder = () => {
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      adminUserId: id,
+      adminUserId: id || "",
       adminEmail: userInformation.email || "",
     }));
   }, [id, userInformation]);
@@ -66,13 +66,17 @@ export const CreateOrder = () => {
 
       console.log("Order created successfully:", response.data);
       alert("Order Created Successfully");
+      
+      // Update order list (assuming response returns new order)
+      setOrderList((prevOrders) => [...prevOrders, response.data]);
+
       setFormData({
         productName: "",
         productPrice: "",
         quantity: 1,
         productDescription: "",
         productImage: null,
-        adminUserId: id,
+        adminUserId: id || "",
         adminEmail: userInformation.email || "",
       });
     } catch (error) {
@@ -91,7 +95,50 @@ export const CreateOrder = () => {
         </div>
       ) : (
         <>
-          <Header userInformation={userInformation} orderListLength={0} /> {/* Insert Header */}
+          <header className="flex items-center justify-between px-6 py-4 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/10">
+            <h1 className="text-2xl font-bold">
+              {userInformation.username || "Guest User"}
+            </h1>
+            <div className="flex items-center space-x-4">
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                animate={{
+                  y: [0, -5, 0],
+                  transition: { repeat: Infinity, duration: 1.5 },
+                }}
+                className="relative p-2 bg-white/10 rounded-full cursor-pointer backdrop-blur-sm border border-white/10"
+              >
+                <NavLink to={`/createorder/${id}`}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-7 h-7 text-gray-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                    {orderList.length}
+                  </span>
+                </NavLink>
+              </motion.div>
+              <NavLink to={`/dashboard/${id}`}>
+                <img
+                  src={userInformation.userImage || "/default-avatar.png"}
+                  alt="User avatar"
+                  className="w-12 h-12 rounded-full object-cover shadow-md border-2 border-white/20"
+                />
+              </NavLink>
+            </div>
+          </header>
+
           <motion.div
             className="min-h-screen flex items-center justify-center"
             style={{
@@ -171,8 +218,6 @@ export const CreateOrder = () => {
                   <FileBase64
                     multiple={false}
                     onDone={handleFileUpload}
-                    className="input input-bordered focus:outline-none focus:ring-2 focus:ring-orange-400 w-full rounded-xl p-3"
-                    required
                   />
                 </label>
               </div>
