@@ -11,6 +11,7 @@ export const Dashboard = () => {
   const [orderList, setOrderList] = useState([]);
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [editedOrder, setEditedOrder] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUserInformation = async () => {
@@ -55,6 +56,14 @@ export const Dashboard = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredOrders = orderList.filter((order) =>
+    order.productName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -98,8 +107,15 @@ export const Dashboard = () => {
 
           <motion.div className="mt-8 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/10" initial="hidden" animate="visible" transition={{ staggerChildren: 0.2 }}>
             <h2 className="text-2xl font-bold text-center mb-4">Orders List:</h2>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Search orders by product name..."
+              className="w-full p-3 mb-4 bg-gray-800 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
             <div className="space-y-4">
-              {orderList
+              {filteredOrders
                 .slice()
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((order, index) => (
