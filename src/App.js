@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./comoents/Login";
-import Navbar from "./comoents/Navbar";
+// import Navbar from "./comoents/Navbar";
 import { CreateOrder } from "./create Order/CreateOder";
 import CreateAccount from "./comoents/CreateAccount";
 import LogoutPage from "./comoents/LogoutPage";
 import { Dashboard } from "./comoents/Dashboard";
 import ResetPassword from "./comoents/Forrgetpassword";
 import NewPassword from "./comoents/NewPassword";
-import { TestingDashboard } from "./comoents/testing dashboard";
+// import { TestingDashboard } from "./comoents/testing dashboard";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           path="/dashboard/:id"
           element={
             <>
-        
+
               <Dashboard />
             </>
           }
@@ -50,7 +50,7 @@ function App() {
           path="/createorder/:id"
           element={
             <>
-              <Navbar />
+              
               <CreateOrder />
             </>
           }
@@ -72,15 +72,7 @@ function App() {
           }
         />
         <Route path="/account/logout" element={<LogoutPage />} />
-        <Route
-          path="/testing/dashboard/:id"
-          element={
-            <>
-            <Navbar />
-              <TestingDashboard />
-            </>
-          }
-        />
+       
         <Route
           path="/account/logout"
           element={
