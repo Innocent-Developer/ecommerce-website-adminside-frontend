@@ -7,6 +7,7 @@ import LogoutPage from "./comoents/LogoutPage";
 import { Dashboard } from "./comoents/Dashboard";
 import ResetPassword from "./comoents/Forrgetpassword";
 import NewPassword from "./comoents/NewPassword";
+import { TestingDashboard } from "./comoents/testing dashboard";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           path="/dashboard/:id"
           element={
             <>
-            <Navbar />
+        
               <Dashboard />
             </>
           }
@@ -71,6 +72,15 @@ function App() {
           }
         />
         <Route path="/account/logout" element={<LogoutPage />} />
+        <Route
+          path="/testing/dashboard/:id"
+          element={
+            <>
+            <Navbar />
+              <TestingDashboard />
+            </>
+          }
+        />
       </Routes>
     </>
   );
