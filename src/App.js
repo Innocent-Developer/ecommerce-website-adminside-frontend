@@ -81,6 +81,14 @@ function App() {
             </>
           }
         />
+        <Route
+          path="/account/logout"
+          element={
+            <>
+           <Login />
+            </>
+          }
+        />
       </Routes>
     </>
   );
