@@ -107,13 +107,18 @@ export const Dashboard = () => {
                     <img src={order.productImage} alt="Product" className="w-16 h-16 rounded-xl object-cover shadow-md border border-white/10" />
                     <div>
                       {editingOrderId === order._id ? (
-                        <div>
-                          <p><strong>Order ID:</strong> {order._id}</p>
-                          <p><strong>Product Name:</strong> <input type="text" name="productName" value={editedOrder.productName} onChange={handleInputChange} className="input-field" /></p>
-                          <p><strong>Quantity:</strong> <input type="number" name="quantity" value={editedOrder.quantity} onChange={handleInputChange} className="input-field" /></p>
-                          <p><strong>Price:</strong> <input type="number" name="productPrice" value={editedOrder.productPrice} onChange={handleInputChange} className="input-field" /></p>
-                          <p><strong>Status:</strong> <input type="text" name="status" value={editedOrder.status} onChange={handleInputChange} className="input-field" /></p>
-                          <button onClick={handleSaveClick} className="btn">Save</button>
+                        <div className="p-4 bg-gray-900/80 rounded-xl shadow-lg space-y-3 border border-gray-700">
+                          <p className="text-lg font-semibold text-teal-400">Editing Order: {order._id}</p>
+                          <div className="space-y-2">
+                            <input type="text" name="productName" value={editedOrder.productName} onChange={handleInputChange} placeholder="Product Name" className="w-full p-2 bg-gray-800 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <input type="number" name="quantity" value={editedOrder.quantity} onChange={handleInputChange} placeholder="Quantity" className="w-full p-2 bg-gray-800 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <input type="number" name="productPrice" value={editedOrder.productPrice} onChange={handleInputChange} placeholder="Price" className="w-full p-2 bg-gray-800 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <input type="text" name="status" value={editedOrder.status} onChange={handleInputChange} placeholder="Status" className="w-full p-2 bg-gray-800 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                          </div>
+                          <div className="flex justify-between mt-4">
+                            <button onClick={handleSaveClick} className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition">Save</button>
+                            <button onClick={() => setEditingOrderId(null)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Cancel</button>
+                          </div>
                         </div>
                       ) : (
                         <div>
@@ -123,8 +128,10 @@ export const Dashboard = () => {
                           <p><strong>Price:</strong> ${order.productPrice}</p>
                           <p><strong>Status:</strong> {order.status}</p>
                           <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-                          <Button label="Remove" orderId={order._id} userId={id} />
-                          <button onClick={() => handleEditClick(order)} className="btn">Edit</button>
+                          <div className="flex space-x-2 mt-2">
+                            <Button label="Remove" orderId={order._id} userId={id} />
+                            <button onClick={() => handleEditClick(order)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Edit</button>
+                          </div>
                         </div>
                       )}
                     </div>
