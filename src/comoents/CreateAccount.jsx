@@ -29,6 +29,7 @@ const CreateAccount = () => {
         'https://ecommerce-website-adminside-backend.onrender.com/account/signup',
         create
       );
+      console.log(response.data);
       toast.success('Signup Successful');
       setCreate({
         Fullname: '',
