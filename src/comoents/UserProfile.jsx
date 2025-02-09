@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import FileBase64 from 'react-file-base64';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const UserProfile = () => {
-  const { id } = useParams();  // Correctly destructure the ID
+  const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     Fullname: '',
@@ -13,8 +15,6 @@ export const UserProfile = () => {
     password: '',
     userImage: ''
   });
-
-  console.log(id);  // Ensure this logs the correct ID
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_ADMIN_BACKEND_URL}/user-profile/${id}`)
@@ -33,8 +33,20 @@ export const UserProfile = () => {
 
   const handleSave = () => {
     axios.put(`${process.env.REACT_APP_ADMIN_BACKEND_URL}/user-profile/${id}`, profile)
-      .then(() => setIsEditing(false))
-      .catch(error => console.error('Error updating profile:', error));
+      .then(() => {
+        setIsEditing(false);
+        toast.success('Profile updated successfully!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+      })
+      .catch(error => {
+        console.error('Error updating profile:', error);
+        toast.error('Failed to update profile.', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+      });
   };
 
   return (
@@ -118,6 +130,9 @@ export const UserProfile = () => {
           </div>
         )}
       </div>
+
+      {/* Toast Notifications */}
+      <ToastContainer />
     </div>
   );
 };
