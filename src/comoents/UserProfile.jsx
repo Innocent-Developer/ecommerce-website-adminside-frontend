@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 export const UserProfile = () => {
-    const USER_ID=useParams();
+  const { id } = useParams();  // Correctly destructure the ID
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     Fullname: '',
@@ -13,15 +13,14 @@ export const UserProfile = () => {
     password: '',
     userImage: ''
   });
-  console.log(USER_ID.id);
-  
+
+  console.log(id);  // Ensure this logs the correct ID
 
   useEffect(() => {
-    const id = USER_ID; // Replace 'USER_ID' with the actual user ID
     axios.get(`${process.env.REACT_APP_ADMIN_BACKEND_URL}/user-profile/${id}`)
       .then(response => setProfile(response.data))
       .catch(error => console.error('Error fetching profile:', error));
-  }, [USER_ID]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +32,7 @@ export const UserProfile = () => {
   };
 
   const handleSave = () => {
-    const id =USER_ID; // Replace 'USER_ID' with the actual user ID
-    axios.put(`/user-profile/${id}`, profile)
+    axios.put(`${process.env.REACT_APP_ADMIN_BACKEND_URL}/user-profile/${id}`, profile)
       .then(() => setIsEditing(false))
       .catch(error => console.error('Error updating profile:', error));
   };
