@@ -63,7 +63,7 @@ export const UserProfile = () => {
             <img 
               src={profile.userImage || "https://via.placeholder.com/150"} 
               alt="Profile Avatar" 
-              className="w-30 h-30 border-4 border-white rounded-full object-cover" 
+              className="w-24 h-24 border-4 border-white rounded-full object-cover" 
             />
             {isEditing && (
               <FileBase64 
