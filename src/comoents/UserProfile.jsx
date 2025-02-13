@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FileBase64 from 'react-file-base64';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -9,6 +9,8 @@ export const UserProfile = () => {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navgation =useNavigate();
+
   const [profile, setProfile] = useState({
     Fullname: '',
     username: '',
@@ -38,6 +40,8 @@ export const UserProfile = () => {
     axios.put(`${process.env.REACT_APP_ADMIN_BACKEND_URL}/user-profile/${id}`, profile)
       .then(() => {
         toast.success('Profile updated successfully!');
+        navgation(`/dashboard/${id}`);
+        
         setIsEditing(false);
       })
       .catch(error => {
