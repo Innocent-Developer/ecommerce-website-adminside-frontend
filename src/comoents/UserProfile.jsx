@@ -41,7 +41,7 @@ export const UserProfile = () => {
       .then(() => {
         toast.success('Profile updated successfully!');
         navgation(`/dashboard/${id}`);
-        
+
         setIsEditing(false);
       })
       .catch(error => {
@@ -63,7 +63,7 @@ export const UserProfile = () => {
             <img 
               src={profile.userImage || "https://via.placeholder.com/150"} 
               alt="Profile Avatar" 
-              className="w-32 h-32 border-4 border-white rounded-full object-cover" 
+              className="w-30 h-30 border-4 border-white rounded-full object-cover" 
             />
             {isEditing && (
               <FileBase64 
