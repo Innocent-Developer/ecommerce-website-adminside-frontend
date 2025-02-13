@@ -45,6 +45,12 @@ const Header = ({ userInformation, orderList, userId }) => {
             className="w-12 h-12 rounded-full object-cover shadow-md border-2 border-white/20"
           />
         </NavLink>
+        <NavLink
+          to={`/account/user-profile/${userId}`}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+        >
+          Update Profile
+        </NavLink>
       </div>
     </header>
   );
