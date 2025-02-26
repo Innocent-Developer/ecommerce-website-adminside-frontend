@@ -10,7 +10,7 @@ const Loader = styled.div`
   height: 36px;
   border-radius: 50%;
   border-left-color: #4f46e5;
-  animation: spin 1s ease infinite;
+  animation: spin 1s linear infinite;
 
   @keyframes spin {
     to {
@@ -26,8 +26,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setLogin({ ...login, [name]: value });
+    setLogin({ ...login, [e.target.name]: e.target.value });
   };
 
   const handleLogin = async (e) => {
@@ -35,52 +34,39 @@ const Login = () => {
     setLoading(true);
     setError("");
 
-    // Get User's Location
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           console.log("User Location:", latitude, longitude);
-
-          try {
-            const { data } = await axios.post(
-              `${process.env.REACT_APP_ADMIN_BACKEND_URL}/account/login`,
-              { ...login, latitude, longitude }
-            );
-
-            localStorage.setItem("user", JSON.stringify(data.data));
-            toast.success("Login Successful");
-            navigate(`/dashboard/${data.data.id}`);
-          } catch (err) {
-            setError(err.response?.data?.message || "Something went wrong. Please try again.");
-            toast.error("Login failed");
-          } finally {
-            setLoading(false);
-          }
+          await submitLogin({ ...login, latitude, longitude });
         },
         (error) => {
-          console.error("Error getting location:", error);
+          console.error("Geolocation Error:", error);
           toast.warning("Could not get location. Please enable location services.");
-          submitLoginWithoutLocation();
+          submitLogin(login);
         }
       );
     } else {
       toast.warning("Geolocation is not supported by your browser.");
-      submitLoginWithoutLocation();
+      submitLogin(login);
     }
   };
 
-  // Fallback function if location is denied
-  const submitLoginWithoutLocation = async () => {
+  const submitLogin = async (loginData) => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_ADMIN_BACKEND_URL}/account/login`,
-        login
+        loginData
       );
 
-      localStorage.setItem("user", JSON.stringify(data.data));
-      toast.success("Login Successful");
-      navigate(`/dashboard/${data.data.id}`);
+      if (data.success) {
+        localStorage.setItem("user", JSON.stringify(data.data));
+        toast.success("Login Successful");
+        navigate(`/dashboard/${data.data.id}`);
+      } else {
+        throw new Error(data.message || "Login failed.");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong. Please try again.");
       toast.error("Login failed");
@@ -91,9 +77,10 @@ const Login = () => {
 
   return (
     <StyledWrapper>
-      <form className="form animate-slide-in" onSubmit={handleLogin}>
+      <form className="form" onSubmit={handleLogin}>
         <p className="form-title">Sign in to your account</p>
         {error && <p className="error-message">{error}</p>}
+        
         <div className="input-container">
           <label htmlFor="email">Email</label>
           <input
@@ -106,6 +93,7 @@ const Login = () => {
             required
           />
         </div>
+
         <div className="input-container">
           <label htmlFor="password">Password</label>
           <input
@@ -118,12 +106,15 @@ const Login = () => {
             required
           />
         </div>
+
         <p className="forgot-password">
           <NavLink to={"/account/forgot-password"}>Forgot password?</NavLink>
         </p>
+
         <button type="submit" className="submit" disabled={loading}>
           {loading ? <Loader /> : "Sign in"}
         </button>
+
         <p className="signup-link">
           No account? <NavLink to={"/account/create-account"}>Sign up</NavLink>
         </p>
