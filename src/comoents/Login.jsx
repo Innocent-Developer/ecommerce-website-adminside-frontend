@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-// Add a simple loader component
 const Loader = styled.div`
   border: 4px solid rgba(0, 0, 0, 0.1);
   width: 36px;
@@ -35,6 +34,44 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    // Get User's Location
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("User Location:", latitude, longitude);
+
+          try {
+            const { data } = await axios.post(
+              `${process.env.REACT_APP_ADMIN_BACKEND_URL}/account/login`,
+              { ...login, latitude, longitude }
+            );
+
+            localStorage.setItem("user", JSON.stringify(data.data));
+            toast.success("Login Successful");
+            navigate(`/dashboard/${data.data.id}`);
+          } catch (err) {
+            setError(err.response?.data?.message || "Something went wrong. Please try again.");
+            toast.error("Login failed");
+          } finally {
+            setLoading(false);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          toast.warning("Could not get location. Please enable location services.");
+          submitLoginWithoutLocation();
+        }
+      );
+    } else {
+      toast.warning("Geolocation is not supported by your browser.");
+      submitLoginWithoutLocation();
+    }
+  };
+
+  // Fallback function if location is denied
+  const submitLoginWithoutLocation = async () => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_ADMIN_BACKEND_URL}/account/login`,
